@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 import { SignJWT, jwtVerify } from 'jose'
 import { SessionPayload } from '@/app/_lib/definitions'
 import { cookies } from 'next/headers'
@@ -25,15 +25,20 @@ export async function decrypt(session: string | undefined = '') {
   }
 }
 
-export async function createSession(userId: string) {
+export async function logout() {
+  // Destroy the session
+  cookies().set("session", "", { expires: new Date(0) });
+}
+
+export async function createSession(userId: string,  role: number[]) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  const session = await encrypt({ userId, expiresAt })
- 
+  const session = await encrypt({ userId, expiresAt, role })
+  
   cookies().set('session', session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
     sameSite: 'lax',
-    path: '/',
+    path: '/'
   })
 }

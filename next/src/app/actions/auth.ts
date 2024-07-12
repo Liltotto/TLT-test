@@ -4,6 +4,8 @@ import { SignupFormSchema, FormState } from '@/app/_lib/definitions'
 
 import { createSession } from '../_lib/session';
 import { redirect } from 'next/navigation';
+// import { userStore } from '@/store/user';
+// import { checkError } from './checkError';
 
 // import { login, generateToken } from '../../../../server/controllers/UserController';
 
@@ -16,7 +18,6 @@ export async function signup(state: FormState, formData: FormData) {
 
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
-    console.log(validatedFields);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
     }
@@ -43,16 +44,22 @@ export async function signup(state: FormState, formData: FormData) {
     }),
   });
 
-  if(!response.ok) {
-    throw new Error(response.statusText)
+  if (!response.ok) {
+    //console.log(!response.ok);
+    // checkError()
+    // const setError = userStore((state) => state.setIsErrorInvalidUser);
+    // setError(true);
+    // console.log(userStore((state) => state.isErrorInvalidUser));
+  } else {
+    const res = await response.json();
+
+    // Current steps:
+    // 4. Create user session
+    await createSession(res.id, res.role)
+    // 5. Redirect user
+    redirect('/goods')
   }
 
-  const res = await response.json();
-  
-    // Current steps:
-  // 4. Create user session
-  await createSession(res.id)
-  // 5. Redirect user
-  redirect('/goods')
+
 
 }

@@ -1,4 +1,18 @@
+'use client'
+
+import { logout } from "@/app/_lib/session";
+import { signOut } from "next-auth/react";
+
 const Sidebar = () => {
+
+
+	const handlerSingOut = () => {
+		
+		logout();
+
+	}
+
+
 	return (
 		<div className='h-screen w-56 bg-slate-100 flex flex-col'>
 			<div className='h1-text flex items-center gap-1 justify-center py-3 text-slate-100 mb-6 bg-gray-800 rounded-br-2xl'>
@@ -68,7 +82,7 @@ const Sidebar = () => {
 				</div>
 				<div className=' w-full flex justify-between'>
 					<h6>Денис Петров</h6>
-					<button>
+					<button onClick={() => handlerSingOut()}>
 						<svg
 							width='18'
 							height='20'
