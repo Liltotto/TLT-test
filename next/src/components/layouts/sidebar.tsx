@@ -2,16 +2,18 @@
 
 import { logout } from "@/app/_lib/session";
 import { signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 const Sidebar = () => {
 
+	const router = useRouter()
 
 	const handlerSingOut = () => {
-		
-		logout();
-
+		logout()
+		router.push('/')
 	}
-
 
 	return (
 		<div className='h-screen w-56 bg-slate-100 flex flex-col'>
