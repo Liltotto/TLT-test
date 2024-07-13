@@ -55,7 +55,7 @@ export async function signup(state: FormState, formData: FormData) {
 
     // Current steps:
     // 4. Create user session
-    await createSession(res.id, res.role)
+    await createSession(res)
     // 5. Redirect user
     redirect('/goods')
   }
