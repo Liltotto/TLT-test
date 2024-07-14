@@ -8,8 +8,6 @@ export const metadata: Metadata = {
 export default function Auth() {
 
 	//const session = await getSession();
-	
-
 	return (
 		<AuthForm/>
 	);

@@ -1,6 +1,6 @@
 // import React from 'react'
 
-export default function Card() {
+export default function CardsItem() {
   return (
     <div className="p-2.5 flex flex-col content-center gap-0.5 w-[244px] h-[334px]">
 
