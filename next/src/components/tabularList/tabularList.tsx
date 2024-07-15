@@ -1,13 +1,18 @@
 'use client'
 
 import { _apiBase } from "@/constants/apiBase"
-// import { products, error, isLoading, isValidating } from "@/services/GoodsService"
-import { cookies_token } from "@/constants/cookie"
 import { fetcher } from "@/helpers/fetcher"
 import useSWR from "swr"
-import { useEffect } from "react"
-import { cookies } from "next/headers"
-import { userStore } from "@/store/user"
+
+// import { _apiBase } from "@/constants/apiBase"
+// import { getAllProducts } from "@/services/GoodsService"
+// import { cookies_token } from "@/constants/cookie"
+// import { fetcher } from "@/helpers/fetcher"
+// import useSWR from "swr"
+// import { useEffect } from "react"
+// import { cookies } from "next/headers"
+// import { userStore } from "@/store/user"
+// import { useSession } from "next-auth/react"
 
 // const fetcher = (url: string) => {
 //     const session = cookies().get('session')?.value;
@@ -27,7 +32,7 @@ interface Product {
     photoUrl: string
 }
 
-export default function TabularList() {
+export default function TabularList({ cookieToken }: { cookieToken: string }) {
 
     // const { data: products } = useSWR(_apiBase + '/products', await fetcher(_apiBase + '/products',
     //     {
@@ -67,25 +72,42 @@ export default function TabularList() {
     //     return res.json();
     //   });
 
-    const tokenSession = userStore((state) => state.tokenSession);
+    // const tokenSession = userStore((state) => state.tokenSession);
 
-    const { data: products, isLoading, isValidating, error } = useSWR([_apiBase + '/products', tokenSession], ([url, token]) => fetcher(_apiBase + '/products', tokenSession));
+    // // const {data: session, status} = useSession();
+    // // console.log({session, status});
+
+
+    // const { data: products, isLoading, isValidating, error } = useSWR([_apiBase + '/products', tokenSession], ([url, token]) => fetcher(_apiBase + '/products', tokenSession));
+
+    // if (error) {
+    //     return <div>Ошибка: {tokenSession}</div>;
+    // }
+
+    // useEffect(() => {
+    //     if (!isLoading && !error) {
+    //         console.log(tokenSession);
+    //     }
+    // }, [tokenSession])
+
+    const { data: products, isLoading, isValidating, error } = useSWR([_apiBase + '/products', cookieToken], ([url, token]) => fetcher(_apiBase + '/products', cookieToken!)
+    )
 
     if (error) {
-        return <div>Ошибка: {tokenSession}</div>;
+        return <div>Ошибка: {error}</div>;
     }
 
-    useEffect(() => {
-        if (!isLoading && !error) {
-            console.log(tokenSession);
-        }
-    }, [tokenSession])
+    if (isLoading) {
+        return <div>Загрузка...</div>;
+    }
+
+    if (isValidating) {
+        return <div>Обновление данных...</div>;
+    }
 
     return (
         <div>
             <div className="p-2.5 ">
-                {isLoading && <div>Загрузка...</div>}
-                {isValidating && <div>Обновление данных...</div>}
                 <table className="min-w-full bg-transparent ">
                     <thead>
                         <tr className="h-[80px] text-[15px] font-normal leading-[18px] tracking-[0%] ">
@@ -98,7 +120,7 @@ export default function TabularList() {
                         </tr>
                     </thead>
                     <tbody className="[&>*:nth-child(odd)]:bg-transparent [&>*:nth-child(even)]:bg-[#0F172A08]">
-                        {/* {products?.map((product: Product) => (
+                        {products?.map((product: Product) => (
                             <tr className="text-[13px] font-normal leading-[16px] tracking-[0%] text-center rounded-md">
                                 <td className="px-6 py-4 whitespace-nowrap"><img src={product.photoUrl} alt={product.name} className="w-16 h-16" /></td>
                                 <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
@@ -107,7 +129,7 @@ export default function TabularList() {
                                 <td className="px-6 py-4 whitespace-nowrap">{product.price}</td>
                                 <td className="px-6 py-4 whitespace-nowrap"><img src="./edit.png" alt="Редактировать" className="w-6 h-6 mr-2" /> <img src="./delete.png" alt="Удалить" className="w-6 h-6" /></td>
                             </tr>
-                        ))} */}
+                        ))}
                         {/* <tr className="text-[13px] font-normal leading-[16px] tracking-[0%] text-center rounded-md">
                             <td className="px-6 py-4 whitespace-nowrap"><img src="./lamp.png" alt="Лампа" className="w-16 h-16" /></td>
                             <td className="px-6 py-4 whitespace-nowrap">Лампа</td>

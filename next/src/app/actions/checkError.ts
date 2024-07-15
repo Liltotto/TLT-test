@@ -1,9 +1,9 @@
 'use client'
 import { userStore } from "@/store/user";
 
-export const checkError = () => {
+// export const checkError = () => {
 
-        const setError = userStore((state) => state.setIsErrorInvalidUser);
-        setError(true);
-        console.log(userStore((state) => state.isErrorInvalidUser));
-}
+//         const setError = userStore((state) => state.setIsErrorInvalidUser);
+//         setError(true);
+//         console.log(userStore((state) => state.isErrorInvalidUser));
+// }

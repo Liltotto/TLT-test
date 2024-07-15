@@ -1,3 +1,4 @@
+// 'use server'
 
 // import { decrypt } from '@/app/_lib/session'
 // import { cookies } from 'next/headers'

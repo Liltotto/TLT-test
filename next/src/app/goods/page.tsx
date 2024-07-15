@@ -5,6 +5,7 @@ import FormCreateOrEdit from "@/components/formCreateOrEdit/formCreateOrEdit";
 import MainSection from "@/components/layouts/mainSection";
 import Sidebar from "@/components/layouts/sidebar";
 import TabularList from "@/components/tabularList/tabularList";
+import TabularListWrapper from "@/components/tabularListWrapper/tabularListWrapper";
 import { MyModal } from "@/components/UI/myModal/myModal";
 import { Metadata } from "next";
 import { useState } from "react";
@@ -27,7 +28,7 @@ export default function Goods() {
 			<Sidebar />
 			{/* <Card/> */}
 			<MainSection>
-				<TabularList />
+				<TabularListWrapper />
 			</MainSection>
 			{/* <MyModal visible={visible} setVisible={handleClick}>
 				<FormCreateOrEdit />
