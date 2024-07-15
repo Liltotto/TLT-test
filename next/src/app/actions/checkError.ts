@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { userStore } from "@/store/user";
 
 // export const checkError = () => {

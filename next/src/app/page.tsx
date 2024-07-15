@@ -1,14 +1,11 @@
-import { Metadata } from 'next';
-import AuthForm from './ui/authForm';
+import { Metadata } from "next";
+import AuthForm from "./ui/authForm";
 
 export const metadata: Metadata = {
-	title: 'Авторизация',
+  title: "Авторизация",
 };
 
 export default function Auth() {
-
-	//const session = await getSession();
-	return (
-		<AuthForm/>
-	);
+  //const session = await getSession();
+  return <AuthForm />;
 }

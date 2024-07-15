@@ -1,60 +1,54 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import MySelector from '../UI/mySelector/mySelector'
-import MyFileUploader from '../UI/myFileUploader/myFileUploader'
+import React, { useState } from "react";
+import MySelector from "../UI/mySelector/mySelector";
+import MyFileUploader from "../UI/myFileUploader/myFileUploader";
 
 export default function FormCreateOrEdit() {
+  const [selectedOption, setSelectedOption] = useState("Select an option");
 
-    const [selectedOption, setSelectedOption] = useState('Select an option');
+  return (
+    <>
+      <h2 className="text-center">Создание товара</h2>
+      <div className="flex flex-col gap-[20px]">
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
+            <h6>Название</h6>
+            <input
+              name="name"
+              type="text"
+              placeholder="Название"
+              className="p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none"
+            />
+          </div>
+        </div>
 
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
+            <h6>Password</h6>
+            <input
+              name="password"
+              placeholder="Password"
+              className="p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none"
+            />
+          </div>
+        </div>
 
-    return (
-        <>
-            <h2 className='text-center'>Создание товара</h2>
-            <div className='flex flex-col gap-[20px]'>
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
+            <h6>Password</h6>
+            <input
+              name="password"
+              placeholder="Password"
+              className="p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none"
+            />
+          </div>
+        </div>
 
-                <div className='flex flex-col gap-1'>
-                    <div className='flex flex-col gap-1'>
-                        <h6>Название</h6>
-                        <input
-                            name='name'
-                            type='text'
-                            placeholder='Название'
-                            className='p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none'
-                        />
-                    </div>
-
-                </div>
-
-                <div className='flex flex-col gap-1'>
-                    <div className='flex flex-col gap-1'>
-                        <h6>Password</h6>
-                        <input
-                            name='password'
-                            placeholder='Password'
-                            className='p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none'
-                        />
-                    </div>
-
-                </div>
-
-                <div className='flex flex-col gap-1'>
-                    <div className='flex flex-col gap-1'>
-                        <h6>Password</h6>
-                        <input
-                            name='password'
-                            placeholder='Password'
-                            className='p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none'
-                        />
-                    </div>
-
-                </div>
-
-                <div className='flex flex-col gap-1'>
-                    <div className='flex flex-col gap-1'>
-                        <h6>Password</h6>
-                        {/* <div className="relative inline-block">
+        <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
+            <h6>Password</h6>
+            {/* <div className="relative inline-block">
 										<select className="p-text block appearance-none w-full bg-[#1118271F] text-[#888F99] pl-[10px] py-[6px] rounded shadow leading-tight focus:outline-none focus:shadow-outline">
 											<option value='' disabled selected hidden>Компания</option>
 											<option value='1'>Компания 1</option>
@@ -66,17 +60,16 @@ export default function FormCreateOrEdit() {
 											<svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M7 10l5 5 5-5H7z" /></svg>
 										</div>
 									</div> */}
-                        <MySelector
-                            options={['Option 1', 'Option 2', 'Option 3']}
-                            selectedOption={selectedOption}
-                            onOptionSelect={setSelectedOption}
-                        // className='p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none'
-                        />
-                    </div>
+            <MySelector
+              options={["Option 1", "Option 2", "Option 3"]}
+              selectedOption={selectedOption}
+              onOptionSelect={setSelectedOption}
+              // className='p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none'
+            />
+          </div>
+        </div>
 
-                </div>
-
-                {/* <div className='flex flex-col gap-1'>
+        {/* <div className='flex flex-col gap-1'>
                                 <div className='flex flex-col gap-1'>
                                     <h6>Password</h6>
                                     <input
@@ -89,7 +82,7 @@ export default function FormCreateOrEdit() {
 
                             </div> */}
 
-                {/* <div className="flex flex-col w-full">
+        {/* <div className="flex flex-col w-full">
 								<h6>Фото</h6>
 								<label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-[298ps] h-[64px] border-gray-300 rounded-lg cursor-pointer">
 									<div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -105,10 +98,9 @@ export default function FormCreateOrEdit() {
 								</label>
 							</div> */}
 
-                <MyFileUploader />
-
-            </div>
-            {/* <div className='flex justify-end gap-2.5'>
+        <MyFileUploader />
+      </div>
+      {/* <div className='flex justify-end gap-2.5'>
                     <button onClick={clickHandler} className={'px-6 py-2 rounded-md font-medium text-base transition duration-200 bg-slate-800 hover:bg-slate-600 text-white'}>
                         Отмена
                     </button>
@@ -116,6 +108,6 @@ export default function FormCreateOrEdit() {
                         Создать
                     </button>
                 </div> */}
-        </>
-    )
+    </>
+  );
 }
