@@ -2,6 +2,8 @@
 
 import { _apiBase } from "@/constants/apiBase"
 import { fetcher } from "@/helpers/fetcher"
+import { useEffect, useState } from "react"
+import { getCookie } from "@/app/actions/cookie"
 import useSWR from "swr"
 
 // import { _apiBase } from "@/constants/apiBase"
@@ -32,7 +34,7 @@ interface Product {
     photoUrl: string
 }
 
-export default function TabularList({ cookieToken }: { cookieToken: string }) {
+export default function TabularList() {
 
     // const { data: products } = useSWR(_apiBase + '/products', await fetcher(_apiBase + '/products',
     //     {
@@ -90,8 +92,13 @@ export default function TabularList({ cookieToken }: { cookieToken: string }) {
     //     }
     // }, [tokenSession])
 
-    const { data: products, isLoading, isValidating, error } = useSWR([_apiBase + '/products', cookieToken], ([url, token]) => fetcher(_apiBase + '/products', cookieToken!)
+    
+    const { data: products, isLoading, isValidating, error } = useSWR(_apiBase + '/products', async(url) => {
+        const cookieToken = await getCookie()
+        return fetcher(url, cookieToken!)}
     )
+
+
 
     if (error) {
         return <div>Ошибка: {error}</div>;
@@ -104,6 +111,29 @@ export default function TabularList({ cookieToken }: { cookieToken: string }) {
     if (isValidating) {
         return <div>Обновление данных...</div>;
     }
+
+
+    // const fetchData = async () => {
+    //     // You'll need to implement your data fetching logic here
+    //     // Example using fetch:
+    //     const response = await fetch(`${_apiBase}/products`, {
+    //         headers: {
+    //             'authorization': `Token ${cookieToken}` // Assuming you have a session token
+    //         }
+    //     });
+    //     const data = await response.json();
+    //     return data;
+    // }
+
+    // const [data, setData] = useState<Product[]>();
+
+    // // Use useEffect to fetch data when the component mounts
+    // useEffect(() => {
+    //     fetchData().then((data) =>{
+    //         console.log(data);
+    //         setData(data)
+    //     } );
+    // }, []);
 
     return (
         <div>
