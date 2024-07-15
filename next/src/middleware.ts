@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+
 import { cookies } from "next/headers";
 import { logout, Welcome, WelcomeUser } from "@/app/_lib/session";
 import { decrypt } from "@/app/_lib/session";
@@ -20,9 +21,6 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 
 }
-
-
-// ВСЕ МЕНЯЯЯТЬ
 
 export const config = {
   matcher: ["/goods" ,"/algorithms"],

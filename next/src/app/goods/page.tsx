@@ -29,9 +29,9 @@ export default function Goods() {
 			<MainSection>
 				<TabularList />
 			</MainSection>
-			<MyModal visible={visible} setVisible={handleClick}>
+			{/* <MyModal visible={visible} setVisible={handleClick}>
 				<FormCreateOrEdit />
-			</MyModal>
+			</MyModal> */}
 		</div>
 	)
 }

@@ -4,6 +4,7 @@ import { SignupFormSchema, FormState } from '@/app/_lib/definitions'
 
 import { createSession } from '../_lib/session';
 import { redirect } from 'next/navigation';
+import { userStore } from '@/store/user';
 // import { userStore } from '@/store/user';
 // import { checkError } from './checkError';
 
@@ -52,7 +53,8 @@ export async function signup(state: FormState, formData: FormData) {
     // console.log(userStore((state) => state.isErrorInvalidUser));
   } else {
     const res = await response.json();
-
+    
+    
     // Current steps:
     // 4. Create user session
     await createSession(res)
