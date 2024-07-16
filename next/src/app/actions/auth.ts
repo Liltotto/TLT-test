@@ -6,13 +6,20 @@ import { SignupFormSchema, FormState } from "@/app/_lib/definitions";
 import { createSession } from "../_lib/session";
 import { redirect } from "next/navigation";
 import { userStore } from "@/store/user";
+import { checkError } from "./checkError";
 // import { checkError } from './checkError';
 // import { userStore } from '@/store/user';
 // import { checkError } from './checkError';
 
 // import { login, generateToken } from '../../../../server/controllers/UserController';
 
-export async function signup(state: FormState, formData: FormData) {
+interface ISignUp {
+  state: FormState;
+  formData: FormData;
+  setIsErrorInvalidUser: (value: boolean) => void;
+}
+
+export async function signup({state, formData, setIsErrorInvalidUser} : ISignUp) {
   //1 Validate form fields
   const validatedFields = SignupFormSchema.safeParse({
     email: formData.get("email"),
@@ -49,7 +56,10 @@ export async function signup(state: FormState, formData: FormData) {
 
   if (!response.ok) {
     //console.log(!response.ok);
-    // checkError()
+    setIsErrorInvalidUser(true);
+    setTimeout(() => {
+      setIsErrorInvalidUser(false);
+    }, 3000);
     // const setError = userStore((state) => state.setIsErrorInvalidUser);
     // setError(true);
     // // console.log(userStore((state) => state.isErrorInvalidUser));

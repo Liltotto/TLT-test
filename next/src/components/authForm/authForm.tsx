@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
-import { signup } from "../actions/auth";
+// import { useActionState, useEffect } from "react";
+import { signup } from "@/app/actions/auth";
 import { useFormState, useFormStatus } from "react-dom";
 import { userStore } from "@/store/user";
 
@@ -10,7 +10,7 @@ function Button() {
   const isErrorInvalidUser = userStore((state) => state.isErrorInvalidUser);
   //console.log(isErrorInvalidUser);
   return (
-    <>
+    <div className="flex flex-col items-center gap-1">
       <button
         disabled={pending}
         className={`px-6 py-2 rounded-md font-medium text-base transition duration-200 bg-slate-300 hover:bg-slate-400 ${pending ? "cursor-not-allowed" : "cursor-pointer"}`}
@@ -22,7 +22,7 @@ function Button() {
           Incorrect email or password
         </p>
       )}
-    </>
+    </div>
   );
 }
 
@@ -35,7 +35,8 @@ export default function AuthForm() {
   };
 
   // const { pending } = useFormStatus();
-  const [state, action] = useFormState(signup, initialState);
+  const setIsErrorInvalidUser = userStore((state) => state.setIsErrorInvalidUser);
+  const [state, action] = useFormState((state: any, formData: FormData) => signup({ state, formData, setIsErrorInvalidUser }), initialState);
 
   return (
     <div>
@@ -83,7 +84,7 @@ export default function AuthForm() {
                         Password must:
                       </p>
                       <ul>
-                        {state.errors.password.map((error) => (
+                        {state.errors.password.map((error: string) => (
                           <li
                             className="text-red-500 text-sm mt-1 ml-1"
                             key={error}

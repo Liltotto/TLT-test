@@ -35,61 +35,6 @@ interface Product {
 }
 
 export default function TabularList() {
-  // const { data: products } = useSWR(_apiBase + '/products', await fetcher(_apiBase + '/products',
-  //     {
-  //         method: 'GET',
-  //         headers: {
-  //             authorization: `Token ${cookies().get('session')?.value}`,
-  //         }
-  //     }
-  // ))
-  // useEffect(() => {
-  //     if (!isLoading && !error) {
-  //         console.log(products);
-  //     }
-  // },[products])
-
-  // useEffect(() => {
-  //     console.log(cookies_token);
-  // }, [cookies_token])
-
-  // const fetcher = (url: string, token: string) => fetch(url, {
-  //     method: 'GET',
-  //     headers: {
-  //         authorization: `Token ${token}`,
-  //     }
-  // }).then(res => res.json());
-
-  // fetch(_apiBase + '/products', {
-  //     method: 'GET', // Обеспечьте правильный метод
-  //     headers: {
-  //       authorization: `Token ${cookies_token}` // Заголовок с учетом регистра
-  //     }
-  //   })
-  //   .then(res => {
-  //     if (!res.ok) {
-  //       throw new Error(`Запрос API завершился с кодом ${res.status}`);
-  //     }
-  //     return res.json();
-  //   });
-
-  // const tokenSession = userStore((state) => state.tokenSession);
-
-  // // const {data: session, status} = useSession();
-  // // console.log({session, status});
-
-  // const { data: products, isLoading, isValidating, error } = useSWR([_apiBase + '/products', tokenSession], ([url, token]) => fetcher(_apiBase + '/products', tokenSession));
-
-  // if (error) {
-  //     return <div>Ошибка: {tokenSession}</div>;
-  // }
-
-  // useEffect(() => {
-  //     if (!isLoading && !error) {
-  //         console.log(tokenSession);
-  //     }
-  // }, [tokenSession])
-
   const {
     data: products,
     isLoading,
@@ -111,28 +56,6 @@ export default function TabularList() {
   if (isValidating) {
     return <div>Обновление данных...</div>;
   }
-
-  // const fetchData = async () => {
-  //     // You'll need to implement your data fetching logic here
-  //     // Example using fetch:
-  //     const response = await fetch(`${_apiBase}/products`, {
-  //         headers: {
-  //             'authorization': `Token ${cookieToken}` // Assuming you have a session token
-  //         }
-  //     });
-  //     const data = await response.json();
-  //     return data;
-  // }
-
-  // const [data, setData] = useState<Product[]>();
-
-  // // Use useEffect to fetch data when the component mounts
-  // useEffect(() => {
-  //     fetchData().then((data) =>{
-  //         console.log(data);
-  //         setData(data)
-  //     } );
-  // }, []);
 
   return (
     <div>
@@ -159,9 +82,7 @@ export default function TabularList() {
                   />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {product.quantity}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{product.quantity}</td>
                 <td className="px-6 py-4 whitespace-nowrap">Ламповый завод</td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.price}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -169,27 +90,11 @@ export default function TabularList() {
                     src="./edit.png"
                     alt="Редактировать"
                     className="w-6 h-6 mr-2"
-                  />{" "}
+                  />
                   <img src="./delete.png" alt="Удалить" className="w-6 h-6" />
                 </td>
               </tr>
             ))}
-            {/* <tr className="text-[13px] font-normal leading-[16px] tracking-[0%] text-center rounded-md">
-                            <td className="px-6 py-4 whitespace-nowrap"><img src="./lamp.png" alt="Лампа" className="w-16 h-16" /></td>
-                            <td className="px-6 py-4 whitespace-nowrap">Лампа</td>
-                            <td className="px-6 py-4 whitespace-nowrap">12</td>
-                            <td className="px-6 py-4 whitespace-nowrap">Ламповый завод</td>
-                            <td className="px-6 py-4 whitespace-nowrap">12.57 р</td>
-                            <td className="px-6 py-4 whitespace-nowrap"><img src="./edit.png" alt="Редактировать" className="w-6 h-6 mr-2" /> <img src="./delete.png" alt="Удалить" className="w-6 h-6" /></td>
-                        </tr>
-                        <tr className="text-[13px] font-normal leading-[16px] tracking-[0%] text-center">
-                            <td className="px-6 py-4 whitespace-nowrap"><img src="./lamp.png" alt="Лампа" className="w-16 h-16" /></td>
-                            <td className="px-6 py-4 whitespace-nowrap">Лампа</td>
-                            <td className="px-6 py-4 whitespace-nowrap">12</td>
-                            <td className="px-6 py-4 whitespace-nowrap">Ламповый завод</td>
-                            <td className="px-6 py-4 whitespace-nowrap">12.57 р</td>
-                            <td className="px-6 py-4 whitespace-nowrap"><img src="./edit.png" alt="Редактировать" className="w-6 h-6 mr-2" /> <img src="./delete.png" alt="Удалить" className="w-6 h-6" /></td>
-                        </tr> */}
           </tbody>
         </table>
       </div>
