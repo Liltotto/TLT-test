@@ -4,17 +4,19 @@ import { useState } from "react";
 
 interface IMainSection {
   children?: React.ReactNode;
+  setSelectedOption: (selectedOption: string) => void;
+  selectedOption: string;
 }
 
-export default function MainSection({ children }: IMainSection) {
-  const [selectedOption, setSelectedOption] = useState("tabular");
+export default function MainSection({ children, setSelectedOption, selectedOption }: IMainSection) {
+  // const [selectedOption, setSelectedOption] = useState("tabular");
 
   const handleOptionChange = (option: string) => {
     setSelectedOption(option);
   };
 
   return (
-    <div className="w-[1024px] flex flex-col my-0 mx-auto gap-[30px] py-8">
+    <div className="relative w-[1024px] flex flex-col my-0 mx-auto gap-[30px] py-8">
       <div className="flex justify-between p-2.5">
         <div>
           <input

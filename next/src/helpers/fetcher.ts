@@ -1,9 +1,42 @@
-export const fetcher = async (url: string, token: string) =>
-  await fetch(url, {
+// export const fetcher = async (url: string, token: string) =>
+//   await fetch(url, {
+//     method: "GET",
+//     headers: {
+//       authorization: `Token ${token}`,
+//     },
+//   }).then((res) => res.json());
+
+export const fetcher = async (url: string, token: string) => {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
       authorization: `Token ${token}`,
     },
-  }).then((res) => res.json());
+  });
+
+  const data = await response.json();
+
+  return {
+    data,
+    headers: response.headers,
+  };
+};
+
+export const fetcherPost = async (url: string, token: string, body: any) => {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {  
+      authorization: `Token ${token}`,
+    },
+    body: JSON.stringify(body),
+  });
+
+  const data = await response.json();
+
+  return {
+    data,
+    headers: response.headers,
+  };
+}; 
 
 // export const fetcher = (url: string, init?: RequestInit) => fetch(url, init).then(res => res.json())

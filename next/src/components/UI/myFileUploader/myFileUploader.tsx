@@ -4,7 +4,7 @@ interface FileUploadProps {
   // Дополнительные свойства, если нужно
 }
 
-const MyFileUploader: React.FC<FileUploadProps> = () => {
+export const MyFileUploader: React.FC<FileUploadProps> = () => {
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,4 +99,3 @@ const MyFileUploader: React.FC<FileUploadProps> = () => {
   );
 };
 
-export default MyFileUploader;

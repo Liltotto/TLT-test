@@ -1,9 +1,15 @@
 "use client";
 
 import { logout } from "@/app/_lib/session";
+import { getCookie } from "@/app/actions/cookie";
+import { _apiBase } from "@/constants/apiBase";
+import { fetcher } from "@/helpers/fetcher";
+// import { getUser } from "@/app/actions/cookie";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import useSWR from "swr";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -12,6 +18,21 @@ const Sidebar = () => {
     logout();
     router.push("/");
   };
+
+  const {
+    data: userData,
+    error,
+  } = useSWR(
+    _apiBase + `/me`,
+    async (url) => {
+      const cookieToken = await getCookie();
+      return fetcher(url, cookieToken!);
+    },
+  );
+
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
 
   return (
     <div className="h-screen w-56 bg-slate-100 flex flex-col">
@@ -76,13 +97,16 @@ const Sidebar = () => {
       </ul>
       <div className="mt-auto p-5 text-slate-900">
         <div className="flex space-x-2 mb-4">
-          <span className="bg-gray-300 px-2 py-1 rounded text-sm">Админ</span>
+          {userData?.data.roles.map((role: any) => (
+            <span className="bg-gray-300 px-2 py-1 rounded text-sm">{role.name}</span>
+          ))}
+          {/* <span className="bg-gray-300 px-2 py-1 rounded text-sm">Админ</span>
           <span className="bg-gray-300 px-2 py-1 rounded text-sm">
             Пользователь
-          </span>
+          </span> */}
         </div>
         <div className=" w-full flex justify-between">
-          <h6>Денис Петров</h6>
+          <h6>{userData?.data.user.name}</h6>
           <button onClick={() => handlerSingOut()}>
             <svg
               width="18"

@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
-import MySelector from "../mySelector/mySelector";
+// import { useState } from "react";
+// import MySelector from "../mySelector/mySelector";
 import cl from "./MyModal.module.scss";
-import MyFileUploader from "../myFileUploader/myFileUploader";
+// import {MyFileUploader} from "../myFileUploader/myFileUploader";
 
 type Props = {
   children?: React.ReactNode;
