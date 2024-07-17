@@ -1,15 +1,41 @@
-// import React from 'react'
+// 'use client';
 
+import { useState } from "react";
 import { ResultProduct } from "../listWrapper/listWrapper";
+import { MyModal } from "../UI/myModal/myModal";
+import FormCheckCard from "../forms/formCheckCard/formCheckCard";
 
 export default function CardsItem({ product }: { product: ResultProduct }) {
 
   // if(product.photoUrl.includes('')) return null
 
-  return (
-    <div className="p-2.5 flex flex-col content-center gap-0.5 w-[244px] h-[334px]">
-      {/* background: url(image) ВАЖНО!! */}
+  const [isChecking, setIsChecking] = useState(false);
 
+  const buttonsOptions_checking = {
+    firstButton: ["bg-neutral-700 hover:bg-neutral-500 text-white", "Удалить"],
+    secondButton: ["bg-slate-300 hover:bg-slate-400", "Назад"],
+  };
+
+
+
+  return (
+    <>  
+    {
+      isChecking && (
+        <MyModal
+          visible={isChecking}
+          setVisible={setIsChecking}
+          buttonsOptions={buttonsOptions_checking}
+        >
+          <FormCheckCard
+            product={product}
+          />
+        </MyModal>
+      )
+    }
+    <div
+    onClick={() => setIsChecking(true)}
+    className="p-2.5 flex flex-col content-center gap-0.5 w-[244px] h-[334px]">
       <div className="my-0 mx-auto">
         <img
           className="rounded-[10px] w-[224px] h-[224px] object-cover"
@@ -28,7 +54,7 @@ export default function CardsItem({ product }: { product: ResultProduct }) {
         </div>
         <div className=" flex justify-between p-2.5">
           <span className="text-slate-900 text-[13px] font-normal leading-4 tracking-[0%]">
-            {product.quantity}
+            {product.quantity} шт
           </span>
           <span className="text-slate-900 text-[13px] font-normal leading-4 tracking-[0%]">
             {product.price} р
@@ -36,5 +62,7 @@ export default function CardsItem({ product }: { product: ResultProduct }) {
         </div>
       </div>
     </div>
+    </>
+    
   );
 }

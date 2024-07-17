@@ -26,6 +26,7 @@ export const fetcherPost = async (url: string, token: string, body: any) => {
   const response = await fetch(url, {
     method: "POST",
     headers: {  
+      "Content-Type": "application/json",
       authorization: `Token ${token}`,
     },
     body: JSON.stringify(body),

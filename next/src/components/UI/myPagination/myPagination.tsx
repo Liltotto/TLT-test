@@ -11,13 +11,32 @@ export const MyPagination = ({
 }: Props) => {
   const pages = [];
   const visiblePages = 5; // Максимальное количество видимых страниц
+
+  if(totalPages === 0) {
+    return null
+  }
+
+  if (totalPages === 1) {
+    // Special case for a single page
+    setCurrentPage(1)
+    pages.push(
+      <button
+        key={1}
+        onClick={() => setCurrentPage(1)}
+        className={`px-[5px] py-2 rounded-md border border-gray-300 bg-gray-200`} // Highlight the only page
+      >
+        1
+      </button>,
+    );
+    return pages;
+  }
+
   let startPage = Math.max(2, currentPage - Math.floor(visiblePages / 2));
   const endPage = Math.min(totalPages - 1, startPage + visiblePages - 1);
 
   if (endPage - startPage + 1 < visiblePages) {
     startPage = Math.max(2, endPage - visiblePages + 1);
   }
-
 
   pages.push(
     <button
@@ -31,7 +50,6 @@ export const MyPagination = ({
     </button>,
   );
 
-
   if (startPage > 2) {
     pages.push(
       <button
@@ -43,7 +61,6 @@ export const MyPagination = ({
       </button>,
     );
   }
-
 
   for (let i = startPage; i <= endPage; i++) {
     pages.push(
@@ -59,7 +76,6 @@ export const MyPagination = ({
     );
   }
 
-
   if (endPage < totalPages - 1) {
     pages.push(
       <button
@@ -71,7 +87,6 @@ export const MyPagination = ({
       </button>,
     );
   }
-
 
   pages.push(
     <button

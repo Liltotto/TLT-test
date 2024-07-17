@@ -1,11 +1,12 @@
 import { useState } from "react";
 
 interface FileUploadProps {
-  // Дополнительные свойства, если нужно
+  file: File | null;
+  setFile: (file: File | null) => void;
 }
 
-export const MyFileUploader: React.FC<FileUploadProps> = () => {
-  const [file, setFile] = useState<File | null>(null);
+export const MyFileUploader: React.FC<FileUploadProps> = ({file, setFile} : FileUploadProps) => {
+  // const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0];
@@ -17,8 +18,8 @@ export const MyFileUploader: React.FC<FileUploadProps> = () => {
   };
 
   return (
-    <div className="flex flex-col w-full gap-1">
-      <h6>Фото</h6>
+    <div className="flex flex-col w-full gap-1 px-2.5">
+      <h6 className="text-[15px] font-normal leading-[18px] tracking-[0%]">Фото</h6>
 
       {file ? (
         <div className="relative flex justify-between">
