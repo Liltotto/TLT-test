@@ -4,7 +4,6 @@ import { logout } from "@/app/_lib/session";
 import { getCookie } from "@/app/_actions/cookie";
 import { _apiBase } from "@/constants/apiBase";
 import { fetcher } from "@/helpers/fetcher";
-// import { getUser } from "@/app/actions/cookie";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";

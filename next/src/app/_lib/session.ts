@@ -2,7 +2,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { SessionPayload } from "@/app/_lib/definitions";
 import { cookies } from "next/headers";
-import { userStore } from "@/store/user";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
