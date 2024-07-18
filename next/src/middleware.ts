@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import { cookies } from "next/headers";
-import { logout, Welcome, WelcomeUser } from "@/app/_lib/session";
+import { Welcome } from "@/app/_lib/session";
 import { decrypt } from "@/app/_lib/session";
 
 export async function middleware(request: NextRequest) {
@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname === "/algorithms" &&
     !parsed!.user.user.roles.includes(1)
   ) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/rightsless", request.url));
   }
 
   return NextResponse.next();

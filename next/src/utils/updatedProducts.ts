@@ -10,6 +10,13 @@ export const getProductsWithManufactorNames = (products: Product[], manufacturer
     });
   }
   
+export const getProductWithManufactorName = (product: Product, manufacturers: Manufacturer[]) => {
+  const manufacturer = manufacturers.find((manufacturer) => manufacturer.id === product.manufacturerId);
+  return {
+    ...product,
+    manufacturerName: manufacturer ? manufacturer.name : '',
+  };
+}
 
 export const getManufacturerId = (name: string, manufacturers: Manufacturer[]) => {
   const manufacturer = manufacturers.find((manufacturer) => manufacturer.name === name);

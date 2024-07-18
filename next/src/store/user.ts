@@ -1,7 +1,4 @@
-// 'use server'
 
-// import { decrypt } from '@/app/_lib/session'
-// import { cookies } from 'next/headers'
 import { Manufacturer } from "@/components/listWrapper/listWrapper";
 import { create } from "zustand";
 
@@ -10,7 +7,8 @@ interface UserState {
   setIsErrorInvalidUser: (value: boolean) => void;
   manufacturers: Manufacturer[];
   setManufacturers: (value: Manufacturer[]) => void;
-  // setTokenSession: (value: string) => void
+  isCreatingProduct: boolean;
+  setIsCreatingProduct: (value: boolean) => void;
 }
 
 export const userStore = create<UserState>((set) => ({
@@ -18,12 +16,6 @@ export const userStore = create<UserState>((set) => ({
   setIsErrorInvalidUser: (value: boolean) => set({ isErrorInvalidUser: value }),
   manufacturers: [],
   setManufacturers: (value: Manufacturer[]) => set({ manufacturers: value }),
-  // setTokenSession: async () =>{
-  //   const global_token: any = await decrypt(cookies().get('session')?.value);
-  //   const token = global_token?.user.token
-  //   set({ tokenSession: token })
-  // },
-  //   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  //   removeAllBears: () => set({ bears: 0 }),
-  //   updateBears: (newBears) => set({ bears: newBears }),
+  isCreatingProduct: false,
+  setIsCreatingProduct: (value: boolean) => set({ isCreatingProduct: value }),
 }));

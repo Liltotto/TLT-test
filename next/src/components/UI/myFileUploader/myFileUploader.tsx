@@ -1,12 +1,12 @@
-import { useState } from "react";
 
 interface FileUploadProps {
   file: File | null;
   setFile: (file: File | null) => void;
+  photoUrl?: string;
+  setPhotoUrl: (photoUrl: string) => void;
 }
 
-export const MyFileUploader: React.FC<FileUploadProps> = ({file, setFile} : FileUploadProps) => {
-  // const [file, setFile] = useState<File | null>(null);
+export const MyFileUploader: React.FC<FileUploadProps> = ({file, setFile, photoUrl, setPhotoUrl} : FileUploadProps) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0];
@@ -15,23 +15,24 @@ export const MyFileUploader: React.FC<FileUploadProps> = ({file, setFile} : File
 
   const handleDeleteFile = () => {
     setFile(null);
+    setPhotoUrl('');
   };
 
   return (
     <div className="flex flex-col w-full gap-1 px-2.5">
       <h6 className="text-[15px] font-normal leading-[18px] tracking-[0%]">Фото</h6>
 
-      {file ? (
+      {file || photoUrl ? (
         <div className="relative flex justify-between">
           <img
-            src={URL.createObjectURL(file)}
+            src={photoUrl ? photoUrl : file ? URL.createObjectURL(file) : ''}
             alt="Preview"
             className="w-[56px] h-[56px] object-contain rounded-md"
           />
 
           <div className="flex items-center gap-2.5">
             <span className="block text-sm text-gray-600 max-w-[200px] overflow-hidden overflow-ellipsis">
-              {file.name}
+              {file ? file.name : 'image.png'} 
             </span>
             <div className=" text-gray-600">
               <button

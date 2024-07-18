@@ -1,8 +1,6 @@
 "use client";
-// import { useState } from "react";
-// import MySelector from "../mySelector/mySelector";
+
 import cl from "./MyModal.module.scss";
-// import {MyFileUploader} from "../myFileUploader/myFileUploader";
 
 type Props = {
   children?: React.ReactNode;
@@ -40,6 +38,7 @@ export const MyModal = ({
           {buttonsOptions.firstButton[1] === "Удалить" ? (
             <>
               <button
+                onClick={handlerClick}
                 className={`px-6 py-2 rounded-md font-medium text-base transition duration-200 ${buttonsOptions.firstButton[0]}`}
               >
                 {buttonsOptions.firstButton[1]}

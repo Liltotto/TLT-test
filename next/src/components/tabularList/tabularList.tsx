@@ -1,31 +1,20 @@
 "use client";
 
 import { _apiBase } from "@/constants/apiBase";
-import { fetcher } from "@/helpers/fetcher";
-import { useEffect, useMemo, useState } from "react";
-import { getCookie } from "@/app/actions/cookie";
-import useSWR, { useSWRConfig } from "swr";
-import { getPageCount } from "@/utils/pagesCount";
-import { MyPagination } from "../UI/myPagination/myPagination";
+import { fetcherDelete, fetcherUpdate } from "@/helpers/fetcher";
+import { useEffect, useState } from "react";
+import { getCookie } from "@/app/_actions/cookie";
 import {
   Manufacturer,
-  Product,
   ResultProduct,
 } from "../listWrapper/listWrapper";
 import { MyModal } from "../UI/myModal/myModal";
 import FormCreateOrEdit from "../forms/formCreateOrEdit/formCreateOrEdit";
-
-// interface Product {
-//   id: number;
-//   name: string;
-//   price: number;
-//   quantity: number;
-//   photoUrl: string;
-// }
+import { IDataTOCreateOrEdit } from "../layouts/mainSection";
+import { userStore } from "@/store/user";
 
 export default function TabularList({
   products,
-  manufacturers,
   setLimit,
 }: {
   products: ResultProduct[];
@@ -34,6 +23,12 @@ export default function TabularList({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const [currentProductId, setCurrentProductId] = useState<number>();
+
+  const [updatedProduct, setUpdatedProduct] = useState<IDataTOCreateOrEdit>();
+
+  const setIsEditingProduct = userStore((state) => state.setIsCreatingProduct);
 
   useEffect(() => {
     setLimit(6);
@@ -49,35 +44,28 @@ export default function TabularList({
     secondButton: ["bg-neutral-700 hover:bg-neutral-500 text-white", "Удалить"],
   };
 
-  // const [totalPages, setTotalPages] = useState<number>(0);
+  const handlerUpdateProduct = async () => {
+    const cookieToken = await getCookie();
+    fetcherUpdate(
+      _apiBase + "/products/" + currentProductId,
+      cookieToken!,
+      updatedProduct,
+    ).then(() => {
+      setIsEditingProduct(true);
+      setIsEditing(false);
+    });
+  };
 
-  // const [page, setPage] = useState(1);
-  // const limit = 6;
-
-  // const {pagesArray} = usePagination(totalPages)
-
-  // const {
-  //   data: products,
-  //   isLoading,
-  //   isValidating,
-  //   error,
-  // } = useSWR(_apiBase + `/products?_limit=${limit}&_page=${page}`, async (url) => {
-  //   const cookieToken = await getCookie();
-  //   return fetcher(url, cookieToken!);
-  // });
-
-  // useEffect(() => {
-  //   console.log(products);
-  //   if(!products) return
-  //   const totalCount = products.headers.get("X-Total-Count");
-  //   setTotalPages(getPageCount(Number(totalCount!), limit));
-  // }, [products]);
-
-  // if (error) {
-  //   return <div>Ошибка: {error}</div>;
-  // }
-
-  // const {mutate} = useSWRConfig()
+  const handlerDeleteProduct = async () => {
+    const cookieToken = await getCookie();
+    fetcherDelete(
+      _apiBase + "/products/" + currentProductId,
+      cookieToken!,
+    ).then(() => {
+      setIsEditingProduct(true);
+      setIsDeleting(false);
+    });
+  };
 
   return (
     <>
@@ -86,8 +74,13 @@ export default function TabularList({
           visible={isEditing}
           setVisible={setIsEditing}
           buttonsOptions={buttonsOptions_editing}
+          handlerClick={handlerUpdateProduct}
         >
-          <FormCreateOrEdit isEditing={true} />
+          <FormCreateOrEdit
+            isEditing={true}
+            currentProductId={currentProductId}
+            setUpdatedProduct={setUpdatedProduct}
+          />
         </MyModal>
       )}
       {isDeleting && (
@@ -95,6 +88,7 @@ export default function TabularList({
           visible={isDeleting}
           setVisible={setIsDeleting}
           buttonsOptions={buttonsOptions_deleting}
+          handlerClick={handlerDeleteProduct}
         >
           <div className="text-2xl font-medium leading-[29px] tracking-[0%] px-[5.5px]">
             Вы действительно хотите удалить товар?
@@ -103,45 +97,50 @@ export default function TabularList({
       )}
       <div className="flex flex-col gap-[30px]">
         <div className="p-2.5 ">
-          <table className="min-w-full bg-transparent border-separate border-spacing-y-2.5">
+          <table className="min-w-full max-w-[1004px] bg-transparent border-separate border-spacing-y-2.5">
             <thead>
               <tr className="h-[80px] text-[15px] font-normal leading-[18px] tracking-[0%] ">
-                <th className="text-left py-[10px] px-[38.6px]">Фото</th>
-                <th className="py-[10px] px-[38.6px]">Название</th>
-                <th className="py-[10px] px-[38.6px]">Количество</th>
-                <th className="py-[10px] px-[38.6px]">Производитель</th>
-                <th className="py-[10px] px-[38.6px]">Цена</th>
-                <th className="py-[10px] px-[38.6px]"></th>
+                <th className="py-[10px] px-[20px]">Фото</th>
+                <th className="py-[10px] px-[20px]">Название</th>
+                <th className="py-[10px] px-[20px]">Количество</th>
+                <th className="py-[10px] px-[20px]">Производитель</th>
+                <th className="py-[10px] px-[20px]">Цена</th>
+                <th className="py-[10px] px-[20px]"></th>
               </tr>
             </thead>
             <tbody className="[&>*:nth-child(odd)]:bg-transparent [&>*:nth-child(even)]:bg-[#0F172A08]">
-              {products?.map((product: Product) => (
+              {products?.map((product: ResultProduct) => (
                 <tr
                   key={product.id}
-                  className="h-[80px] text-[13px] font-normal leading-[16px] tracking-[0%] text-center  "
+                  className="h-[80px] text-[13px] font-normal leading-[16px] tracking-[0%] text-center"
                 >
                   <td className="p-2.5 whitespace-nowrap rounded-l-md">
                     <img
                       src={product.photoUrl}
                       alt={product.name}
-                      className="w-14 h-14 rounded-[5px]"
+                      className="w-14 h-14 rounded-[5px] mx-auto"
                     />
                   </td>
-                  <td className="py-2.5 px-[38.6px] whitespace-nowrap ">
+                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
                     {product.name}
                   </td>
-                  <td className="py-2.5 px-[38.6px] whitespace-nowrap ">
+                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
                     {product.quantity}
                   </td>
-                  <td className="py-2.5 px-[38.6px] whitespace-nowrap ">
-                    Ламповый завод
+                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
+                    {product.manufacturerName}
                   </td>
-                  <td className="py-2.5 px-[38.6px] whitespace-nowrap ">
+                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
                     {product.price} р
                   </td>
-                  <td className="py-2.5 px-[38.6px] whitespace-nowrap rounded-r-md">
+                  <td className="py-2.5 px-[20px] whitespace-nowrap rounded-r-md">
                     <div className="flex gap-2.5">
-                      <button onClick={() => setIsEditing(true)}>
+                      <button
+                        onClick={() => {
+                          setCurrentProductId(product.id);
+                          setIsEditing(true);
+                        }}
+                      >
                         <svg
                           width="21"
                           height="22"
@@ -164,7 +163,12 @@ export default function TabularList({
                         </svg>
                       </button>
 
-                      <button onClick={() => setIsDeleting(true)}>
+                      <button
+                        onClick={() => {
+                          setCurrentProductId(product.id);
+                          setIsDeleting(true);
+                        }}
+                      >
                         <svg
                           width="18"
                           height="22"
@@ -181,18 +185,12 @@ export default function TabularList({
                         </svg>
                       </button>
                     </div>
-
-                    {/* <img src="./delete.png" alt="Удалить" className="w-6 h-6" /> */}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        {/* <div className="absolute bottom-[62px] right-1/2 translate-x-1/2">
-          <MyPagination totalPages={totalPages} setCurrentPage={setPage} currentPage={page} />
-      </div> */}
       </div>
     </>
   );

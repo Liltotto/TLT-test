@@ -1,14 +1,13 @@
 "use client";
 
-// import { useActionState, useEffect } from "react";
-import { signup } from "@/app/actions/auth";
+import { signup } from "@/app/_actions/auth";
 import { useFormState, useFormStatus } from "react-dom";
 import { userStore } from "@/store/user";
 
 function Button() {
   const { pending } = useFormStatus();
   const isErrorInvalidUser = userStore((state) => state.isErrorInvalidUser);
-  //console.log(isErrorInvalidUser);
+
   return (
     <div className="flex flex-col items-center gap-1">
       <button
@@ -34,9 +33,14 @@ export default function AuthForm() {
     },
   };
 
-  // const { pending } = useFormStatus();
-  const setIsErrorInvalidUser = userStore((state) => state.setIsErrorInvalidUser);
-  const [state, action] = useFormState((state: any, formData: FormData) => signup({ state, formData, setIsErrorInvalidUser }), initialState);
+  const setIsErrorInvalidUser = userStore(
+    (state) => state.setIsErrorInvalidUser,
+  );
+  const [state, action] = useFormState(
+    (state: any, formData: FormData) =>
+      signup({ state, formData, setIsErrorInvalidUser }),
+    initialState,
+  );
 
   return (
     <div>

@@ -1,5 +1,3 @@
-// import React from 'react'
-
 import { ResultProduct } from "@/components/listWrapper/listWrapper";
 
 export default function FormCheckCard({ product }: { product: ResultProduct }) {

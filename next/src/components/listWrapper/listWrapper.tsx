@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import CardsItem from "../cardsItem/cardsItem";
 import { MyPagination } from "../UI/myPagination/myPagination";
 import { fetcher } from "@/helpers/fetcher";
 import useSWR from "swr";
-import { getCookie } from "@/app/actions/cookie";
+import { getCookie } from "@/app/_actions/cookie";
 import { _apiBase } from "@/constants/apiBase";
 import { getPageCount } from "@/utils/pagesCount";
 import TabularList from "../tabularList/tabularList";
@@ -14,7 +13,7 @@ import { userStore } from "@/store/user";
 export interface Product {
   id: number;
   name: string;
-  price: number;
+  price: string;
   quantity: number;
   photoUrl: string;
   manufacturerId: number;
@@ -29,26 +28,28 @@ export interface ResultProduct extends Product {
   manufacturerName: string;
 }
 
-export default function ListWrapper({selectedOption, searchQuery} : {selectedOption: string, searchQuery: string}) {
+export default function ListWrapper({
+  selectedOption,
+  searchQuery,
+}: {
+  selectedOption: string;
+  searchQuery: string;
+}) {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [limit, setLimit] = useState(0);
   const [page, setPage] = useState(1);
   const [resultProducts, setResultProducts] = useState<ResultProduct[]>([]);
-  
+
   const setManufacturers = userStore((state) => state.setManufacturers);
+
+  const isCreatingProduct = userStore((state) => state.isCreatingProduct);
+  const setIsCreatingProduct = userStore((state) => state.setIsCreatingProduct);
 
   useEffect(() => {
     setPage(1);
-  }, [limit])
+  }, [limit]);
 
-//   const [selectedOption, setSelectedOption] = useState("tabular");
-
-//   const { pagesArray } = usePagination(totalPages);
-
-  const {
-    data: manufacturers,
-    error: manufacturersError,
-  } = useSWR(
+  const { data: manufacturers, error: manufacturersError } = useSWR(
     _apiBase + `/manufacturers`,
     async (url) => {
       const cookieToken = await getCookie();
@@ -59,6 +60,7 @@ export default function ListWrapper({selectedOption, searchQuery} : {selectedOpt
   const {
     data: products,
     error: productsError,
+    mutate: productsMutate,
   } = useSWR(
     _apiBase + `/products?_limit=${limit}&_page=${page}&q=${searchQuery}`,
     async (url) => {
@@ -67,20 +69,14 @@ export default function ListWrapper({selectedOption, searchQuery} : {selectedOpt
     },
   );
 
-//   const getProductsWithManufactorNames = (products: Product[], manufacturers: Manufacturer[]) => {
-//     return products.map((product) => {
-//       const manufacturer = manufacturers.find((manufacturer) => manufacturer.id === product.manufacturerId);
-//       return {
-//         ...product,
-//         manufacturerName: manufacturer ? manufacturer.name : '',
-//       };
-//     });
-//   }
 
   useEffect(() => {
     if (!products || !manufacturers) return;
     setManufacturers(manufacturers.data);
-    const updatedProducts = getProductsWithManufactorNames(products.data, manufacturers.data);
+    const updatedProducts = getProductsWithManufactorNames(
+      products.data,
+      manufacturers.data,
+    );
     setResultProducts(updatedProducts);
   }, [products, manufacturers]);
 
@@ -90,14 +86,30 @@ export default function ListWrapper({selectedOption, searchQuery} : {selectedOpt
     setTotalPages(getPageCount(Number(totalCount!), limit));
   }, [products]);
 
+  useEffect(() => {
+    if (!products) return;
+    if (isCreatingProduct) {
+      productsMutate();
+      setIsCreatingProduct(false);
+    }
+  }, [isCreatingProduct]);
+
   if (productsError || manufacturersError) {
     return <div>Ошибка: {productsError || manufacturersError}</div>;
   }
 
   return (
     <div>
-      {selectedOption === "tabular" ? <TabularList setLimit={setLimit} products={resultProducts} manufacturers={manufacturers?.data}/> : null}
-      {selectedOption === "card" ? <CardList setLimit={setLimit} products={resultProducts} /> : null}
+      {selectedOption === "tabular" ? (
+        <TabularList
+          setLimit={setLimit}
+          products={resultProducts}
+          manufacturers={manufacturers?.data}
+        />
+      ) : null}
+      {selectedOption === "card" ? (
+        <CardList setLimit={setLimit} products={resultProducts} />
+      ) : null}
 
       <div className="absolute bottom-[62px] right-1/2 translate-x-1/2">
         <MyPagination

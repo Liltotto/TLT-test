@@ -1,13 +1,13 @@
-// 'use client';
-
 import { useState } from "react";
 import { ResultProduct } from "../listWrapper/listWrapper";
 import { MyModal } from "../UI/myModal/myModal";
 import FormCheckCard from "../forms/formCheckCard/formCheckCard";
+import { getCookie } from "@/app/_actions/cookie";
+import { fetcherDelete } from "@/helpers/fetcher";
+import { _apiBase } from "@/constants/apiBase";
+import { userStore } from "@/store/user";
 
 export default function CardsItem({ product }: { product: ResultProduct }) {
-
-  // if(product.photoUrl.includes('')) return null
 
   const [isChecking, setIsChecking] = useState(false);
 
@@ -16,7 +16,18 @@ export default function CardsItem({ product }: { product: ResultProduct }) {
     secondButton: ["bg-slate-300 hover:bg-slate-400", "Назад"],
   };
 
+  const setIsCheckingProduct = userStore((state) => state.setIsCreatingProduct);
 
+  const handlerDeleteProduct = async () => {
+    const cookieToken = await getCookie();
+    fetcherDelete(
+      _apiBase + "/products/" + product.id,
+      cookieToken!,
+    ).then(() => {
+      setIsCheckingProduct(true);
+      setIsChecking(false);
+    });
+  };
 
   return (
     <>  
@@ -26,6 +37,7 @@ export default function CardsItem({ product }: { product: ResultProduct }) {
           visible={isChecking}
           setVisible={setIsChecking}
           buttonsOptions={buttonsOptions_checking}
+          handlerClick={handlerDeleteProduct}
         >
           <FormCheckCard
             product={product}

@@ -10,20 +10,19 @@ export const MyPagination = ({
   setCurrentPage,
 }: Props) => {
   const pages = [];
-  const visiblePages = 5; // Максимальное количество видимых страниц
+  const visiblePages = 5; 
 
   if(totalPages === 0) {
     return null
   }
 
   if (totalPages === 1) {
-    // Special case for a single page
     setCurrentPage(1)
     pages.push(
       <button
         key={1}
         onClick={() => setCurrentPage(1)}
-        className={`px-[5px] py-2 rounded-md border border-gray-300 bg-gray-200`} // Highlight the only page
+        className={`px-[5px] py-2 rounded-md border border-gray-300 bg-gray-200`}
       >
         1
       </button>,

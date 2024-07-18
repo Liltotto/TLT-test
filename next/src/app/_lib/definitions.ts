@@ -26,5 +26,4 @@ export type FormState =
 
 export type SessionPayload = {
   user: any;
-  // expiresAt: Date;
 };

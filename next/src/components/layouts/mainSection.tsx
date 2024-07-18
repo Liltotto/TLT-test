@@ -1,11 +1,11 @@
-// 'use client'
 
 import { useState } from "react";
 import { MyModal } from "../UI/myModal/myModal";
 import FormCreateOrEdit from "../forms/formCreateOrEdit/formCreateOrEdit";
-import { useSWRConfig } from "swr";
 import { fetcherPost } from "@/helpers/fetcher";
-import { getCookie } from "@/app/actions/cookie";
+import { getCookie } from "@/app/_actions/cookie";
+import { _apiBase } from "@/constants/apiBase";
+import { userStore } from "@/store/user";
 
 interface IMainSection {
   children?: React.ReactNode;
@@ -15,11 +15,11 @@ interface IMainSection {
   searchQuery: string;
 }
 
-export interface IDataTOCreate {
+export interface IDataTOCreateOrEdit {
   name: string;
   price: string;
   quantity: number;
-  file: File | null;
+  photoUrl: string;
   manufacturerId: number;
 }
 
@@ -30,7 +30,6 @@ export default function MainSection({
   setSearchQuery,
   searchQuery,
 }: IMainSection) {
-  // const [selectedOption, setSelectedOption] = useState("tabular");
 
   const handleOptionChange = (option: string) => {
     setSelectedOption(option);
@@ -38,21 +37,19 @@ export default function MainSection({
 
   const [isCreating, setIsCreating] = useState(false);
 
-  const [dataToCreate, setDataToCreate] = useState<IDataTOCreate>({
+  const [dataToCreate, setDataToCreate] = useState<IDataTOCreateOrEdit>({
     name: "",
-    price: '',
+    price: "",
     quantity: 0,
-    file: null,
+    photoUrl: '',
     manufacturerId: 0,
   });
 
-  const {mutate} = useSWRConfig()
+  const setIsCreatingProduct = userStore((state) => state.setIsCreatingProduct);
 
-  const handlerDataToCreate = (data: IDataTOCreate) => {
+  const handlerDataToCreate = (data: IDataTOCreateOrEdit) => {
     setDataToCreate(data);
   };
-  
-  // const [searchQuery, setSearchQuery] = useState('');
 
   const buttonsOptions_creating = {
     firstButton: ["bg-neutral-700 hover:bg-neutral-500 text-white", "Отмена"],
@@ -60,13 +57,12 @@ export default function MainSection({
   };
 
   const handlerCreateProduct = async () => {
-    const jsonData = {dataToCreate}
-
-    mutate('/products',  async (url) => {
-      const cookieToken = await getCookie();
-      return fetcherPost(url, cookieToken!, jsonData);
-    })
-  }
+    const cookieToken = await getCookie();
+    fetcherPost(_apiBase + "/products", cookieToken!, dataToCreate).then(() => {
+      setIsCreatingProduct(true);
+      setIsCreating(false);
+    });
+  };
 
   return (
     <>
@@ -77,7 +73,11 @@ export default function MainSection({
           buttonsOptions={buttonsOptions_creating}
           handlerClick={handlerCreateProduct}
         >
-          <FormCreateOrEdit isEditing={false} dataToPost={dataToCreate} setDataToCreate={handlerDataToCreate}/>
+          <FormCreateOrEdit
+            isEditing={false}
+            dataToPost={dataToCreate}
+            setDataToCreate={handlerDataToCreate}
+          />
         </MyModal>
       )}
 
@@ -100,8 +100,6 @@ export default function MainSection({
                   onClick={() => handleOptionChange("tabular")}
                   className={`px-[15.81px] py-[13.13px] rounded-md rounded-r-none font-medium text-base transition duration-200 bg-slate-300 hover:bg-[#11182742] ${selectedOption === "tabular" ? "bg-slate-400" : ""}`}
                 >
-                  {/* //className={selectedOption === 'tabular' ? 'active' : ''} */}
-
                   <svg
                     width="20"
                     height="13"

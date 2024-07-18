@@ -47,15 +47,10 @@ export async function decrypt<Welcome>(session: string | undefined = "") {
 }
 
 export async function logout() {
-  // Destroy the session
   cookies().set("session", "", { expires: new Date(0) });
 }
 
 export async function createSession(user: any) {
-  // const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  // const setToken = userStore((state) => state.setTokenSession);
-  // setToken(user.token)
-  // console.log(userStore((state) => state.tokenSession));
   const session = await encrypt({ user });
 
   cookies().set("session", session);
