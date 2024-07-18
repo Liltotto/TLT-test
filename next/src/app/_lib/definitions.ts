@@ -24,6 +24,12 @@ export type FormState =
     }
   | undefined;
 
+export const CreateOrEditFormSchema = z.object({
+  name:z.string().min(1, { message: "This field must not be empty." }),
+  quantity:z.number().min(1, { message: "This field must not be empty." }),
+  price: z.string().min(1, { message: "This field must not be empty." }),
+});
+
 export type SessionPayload = {
   user: any;
 };

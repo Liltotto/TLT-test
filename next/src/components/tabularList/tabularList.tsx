@@ -100,11 +100,11 @@ export default function TabularList({
           <table className="min-w-full max-w-[1004px] bg-transparent border-separate border-spacing-y-2.5">
             <thead>
               <tr className="h-[80px] text-[15px] font-normal leading-[18px] tracking-[0%] ">
-                <th className="py-[10px] px-[20px]">Фото</th>
-                <th className="py-[10px] px-[20px]">Название</th>
-                <th className="py-[10px] px-[20px]">Количество</th>
-                <th className="py-[10px] px-[20px]">Производитель</th>
-                <th className="py-[10px] px-[20px]">Цена</th>
+                <th className="py-[10px] px-[20px] text-ellipsis overflow-hidden whitespace-nowrap">Фото</th>
+                <th className="py-[10px] px-[20px] text-ellipsis overflow-hidden whitespace-nowrap">Название</th>
+                <th className="py-[10px] px-[20px] text-ellipsis overflow-hidden whitespace-nowrap">Количество</th>
+                <th className="py-[10px] px-[20px] text-ellipsis overflow-hidden whitespace-nowrap">Производитель</th>
+                <th className="py-[10px] px-[20px] text-ellipsis overflow-hidden whitespace-nowrap">Цена</th>
                 <th className="py-[10px] px-[20px]"></th>
               </tr>
             </thead>
@@ -114,26 +114,26 @@ export default function TabularList({
                   key={product.id}
                   className="h-[80px] text-[13px] font-normal leading-[16px] tracking-[0%] text-center"
                 >
-                  <td className="p-2.5 whitespace-nowrap rounded-l-md">
+                  <td className="max-w-[160px] p-2.5 whitespace-nowrap rounded-l-md text-ellipsis overflow-hidden">
                     <img
                       src={product.photoUrl}
                       alt={product.name}
                       className="w-14 h-14 rounded-[5px] mx-auto"
                     />
                   </td>
-                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
+                  <td className="max-w-[250px] py-2.5 px-[20px] whitespace-nowrap text-ellipsis overflow-hidden">
                     {product.name}
                   </td>
-                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
+                  <td className="max-w-[200px] py-2.5 px-[20px] whitespace-nowrap text-ellipsis overflow-hidden ">
                     {product.quantity}
                   </td>
-                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
+                  <td className="max-w-[200px] py-2.5 px-[20px] whitespace-nowrap text-ellipsis overflow-hidden">
                     {product.manufacturerName}
                   </td>
-                  <td className="py-2.5 px-[20px] whitespace-nowrap ">
+                  <td className="max-w-[200px] py-2.5 px-[20px] whitespace-nowrap text-ellipsis overflow-hidden ">
                     {product.price} р
                   </td>
-                  <td className="py-2.5 px-[20px] whitespace-nowrap rounded-r-md">
+                  <td className="max-w-[200px] py-2.5 px-[20px] whitespace-nowrap rounded-r-md">
                     <div className="flex gap-2.5">
                       <button
                         onClick={() => {

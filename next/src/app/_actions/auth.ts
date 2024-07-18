@@ -13,7 +13,7 @@ interface ISignUp {
   setIsErrorInvalidUser: (value: boolean) => void;
 }
 
-export async function signup({state, formData, setIsErrorInvalidUser} : ISignUp) {
+export async function signup({formData, setIsErrorInvalidUser} : ISignUp) {
 
   const validatedFields = SignupFormSchema.safeParse({
     email: formData.get("email"),
