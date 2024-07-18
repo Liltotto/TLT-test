@@ -1,5 +1,6 @@
 "use client";
 
+import { formStore } from "@/store/user";
 import cl from "./MyModal.module.scss";
 
 type Props = {
@@ -26,6 +27,8 @@ export const MyModal = ({
     rootClasses.push(cl.active);
   }
 
+  const handleSubmit = formStore((state) => state.handleSubmit);
+
   return (
     <div className={rootClasses.join(" ")} onClick={() => setVisible(false)}>
       <div
@@ -38,6 +41,7 @@ export const MyModal = ({
           {buttonsOptions.firstButton[1] === "Удалить" ? (
             <>
               <button
+                form="createOrEditFrom"
                 onClick={handlerClick}
                 className={`px-6 py-2 rounded-md font-medium text-base transition duration-200 ${buttonsOptions.firstButton[0]}`}
               >
@@ -53,13 +57,15 @@ export const MyModal = ({
           ) : (
             <>
               <button
+                type="submit"
+                form="createOrEditFrom"
                 onClick={() => setVisible(false)}
                 className={`px-6 py-2 rounded-md font-medium text-base transition duration-200 ${buttonsOptions.firstButton[0]}`}
               >
                 {buttonsOptions.firstButton[1]}
               </button>
               <button
-                onClick={handlerClick}
+                onClick={handleSubmit ? handleSubmit(handlerClick!) : handlerClick}
                 className={`px-6 py-2 rounded-md font-medium text-base transition duration-200 ${buttonsOptions.secondButton[0]}`}
               >
                 {buttonsOptions.secondButton[1]}

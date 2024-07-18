@@ -60,6 +60,7 @@ export default function ListWrapper({
   const {
     data: products,
     error: productsError,
+    isLoading: productsIsLoading,
     mutate: productsMutate,
   } = useSWR(
     _apiBase + `/products?_limit=${limit}&_page=${page}&q=${searchQuery}`,
@@ -96,6 +97,10 @@ export default function ListWrapper({
 
   if (productsError || manufacturersError) {
     return <div>Ошибка: {productsError || manufacturersError}</div>;
+  }
+
+  if (productsIsLoading) {
+    return <div>Загрузка...</div>;
   }
 
   return (

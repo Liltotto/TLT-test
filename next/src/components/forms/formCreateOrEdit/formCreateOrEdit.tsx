@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import MySelector from "../../UI/mySelector/mySelector";
 import { MyFileUploader } from "../../UI/myFileUploader/myFileUploader";
-import { userStore } from "@/store/user";
+import { formStore, userStore } from "@/store/user";
 import {
   getManufacturerId,
   getProductWithManufactorName,
@@ -11,6 +11,7 @@ import {
 import { IDataTOCreateOrEdit } from "@/components/layouts/mainSection";
 import { ResultProduct } from "@/components/listWrapper/listWrapper";
 import { getProductById } from "@/utils/getProduct";
+import { useForm } from "react-hook-form";
 
 interface Props {
   isEditing?: boolean;
@@ -25,13 +26,22 @@ export default function FormCreateOrEdit({
   dataToPost,
   setDataToCreate,
   currentProductId,
-  setUpdatedProduct
+  setUpdatedProduct,
 }: Props) {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue
+  } = useForm();
+
+  const setHandleSubmit = formStore((state) => state.setHandleSubmit);
 
   const [resultProductById, setResultProductById] = useState<ResultProduct>();
 
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState<number>();
   const [price, setPrice] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string>("");
@@ -44,6 +54,10 @@ export default function FormCreateOrEdit({
   const manufacturers = userStore((state) => state.manufacturers);
 
   useEffect(() => {
+    if (setHandleSubmit) setHandleSubmit(handleSubmit);
+  }, [setHandleSubmit]) 
+
+  useEffect(() => {
     if (currentProductId) {
       getProductById(currentProductId).then((product) => {
         const productWidthManufacturerName = getProductWithManufactorName(
@@ -52,19 +66,21 @@ export default function FormCreateOrEdit({
         );
         setResultProductById(productWidthManufacturerName);
       });
-
     }
   }, []);
 
   useEffect(() => {
     if (!resultProductById) return;
-    console.log(resultProductById);
     setName(resultProductById.name);
     setQuantity(resultProductById.quantity);
     setPrice(resultProductById.price);
     setPhotoUrl(resultProductById.photoUrl);
     setSelectedOption(resultProductById.manufacturerName);
     setManufacturerId(resultProductById.manufacturerId);
+
+    setValue("name", resultProductById.name);
+    setValue("price", resultProductById.price);
+    setValue("quantity", resultProductById.quantity);
   }, [resultProductById]);
 
   useEffect(() => {
@@ -72,7 +88,7 @@ export default function FormCreateOrEdit({
     setUpdatedProduct({
       name,
       price,
-      quantity,
+      quantity: quantity!,
       photoUrl: resultProductById?.photoUrl!,
       manufacturerId,
     });
@@ -96,7 +112,7 @@ export default function FormCreateOrEdit({
     setDataToCreate({
       name,
       price,
-      quantity,
+      quantity: quantity!,
       photoUrl: file ? URL.createObjectURL(file) : photoUrl,
       manufacturerId,
     });
@@ -113,13 +129,14 @@ export default function FormCreateOrEdit({
             Название
           </h6>
           <input
-            name="name"
+            {...register("name", { required: true })}
             type="text"
             placeholder="Название"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none"
           />
+          {errors.name && <p className="text-red-500 text-sm mt-1 ml-1">Это поле обязательно</p>}
         </div>
 
         <div className="flex flex-col gap-1 px-2.5">
@@ -127,12 +144,14 @@ export default function FormCreateOrEdit({
             Количество
           </h6>
           <input
-            name="quantity"
+            {...register("quantity", { required: true })}
             placeholder="Количество"
+            type="number"
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
             className="p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none"
           />
+          {errors.quantity && <p className="text-red-500 text-sm mt-1 ml-1">Это поле обязательно</p>}
         </div>
 
         <div className="flex flex-col gap-1 px-2.5">
@@ -140,12 +159,15 @@ export default function FormCreateOrEdit({
             Цена
           </h6>
           <input
-            name="price"
-            placeholder="Цена"
+            {...register("price", { required: true })}
+            placeholder="Цена"  
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={(e) => {
+              setPrice(e.target.value)}}
             className="p-text bg-[#1118271F] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#1118271F] focus:bg-transparent outline-none"
+           
           />
+          {errors.price && <p className="text-red-500 text-sm mt-1 ml-1">Это поле обязательно</p>}
         </div>
 
         <div className="flex flex-col gap-1 px-2.5">

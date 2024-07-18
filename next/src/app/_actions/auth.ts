@@ -30,7 +30,6 @@ export async function signup({formData, setIsErrorInvalidUser} : ISignUp) {
 
   const _apiBase = "http://localhost:3002";
 
-  console.log(email, password);
   const response = await fetch(`${_apiBase}/login`, {
     method: "POST",
     headers: {

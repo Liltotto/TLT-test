@@ -4,8 +4,6 @@ import { logout } from "@/app/_lib/session";
 import { getCookie } from "@/app/_actions/cookie";
 import { _apiBase } from "@/constants/apiBase";
 import { fetcher } from "@/helpers/fetcher";
-import { signOut } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -26,7 +24,6 @@ const Sidebar = () => {
   });
 
   useEffect(() => {
-    console.log(window.location.pathname );
     setPathname(window.location.pathname);
   }, [window.location.pathname ]);
 
